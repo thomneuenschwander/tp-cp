@@ -111,9 +111,6 @@ gcc src/01_serial_kmeans.c -o bin/kmeans_serial -lm
 time ./bin/kmeans_serial
 ```
 
-Usamos reduction porque, dentro do loop, fazemos a soma das coordenadas para calcular os centróides. 
-Se várias threads tentassem atualizar essas somas ao mesmo tempo, os valores seriam sobrescritos e o resultado sairia errado. Com o reduction, cada thread trabalha com uma cópia própria das variáveis soma e cont, faz suas operações de forma independente e, no final, todas essas cópias são agrupadas/combinadas.
-
 ### 2. Paralelo com OpenMP para CPU
 
 Fonte: [`02_omp_cpu_kmeans.c`](./src/02_omp_cpu_kmeans.c)
@@ -124,6 +121,9 @@ mkdir -p bin
 gcc src/02_omp_cpu_kmeans.c -o bin/kmeans_omp_cpu -fopenmp -lm
 time OMP_NUM_THREADS=1 bin/kmeans_omp_cpu
 ```
+Usamos reduction porque, dentro do loop, fazemos a soma das coordenadas para calcular os centróides. 
+Se várias threads tentassem atualizar essas somas ao mesmo tempo, os valores seriam sobrescritos e o resultado sairia errado. Com o reduction, cada thread trabalha com uma cópia própria das variáveis soma e cont, faz suas operações de forma independente e, no final, todas essas cópias são agrupadas/combinadas.
+
 ### 3. Paralelo com OpenMP para GPU
 
 Fonte: [`03_omp_gpu_kmeans.c`](./src/03_omp_gpu_kmeans.c)
